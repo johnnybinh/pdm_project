@@ -4,6 +4,7 @@ import { ThemeProvider } from "./util/theme-provider";
 import Register from "./page/auth/register/Register";
 import Login from "./page/auth/login/Login";
 import HomePage from "./page/home/HomePage";
+import Upload from "./page/upload/Upload";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/auth/register" element={<Register />}></Route>
         </Route>
         <Route path="/home" element={<HomePage />} />
+        <Route path="/upload" element={<Upload />}></Route>
       </Routes>
     </ThemeProvider>
   );
