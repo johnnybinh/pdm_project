@@ -30,13 +30,11 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf()
+    http.cors().configurationSource(corsConfigurationSource()).and().csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/auth/**")
-        .permitAll()
         .anyRequest()
-        .authenticated()
+        .permitAll()
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
