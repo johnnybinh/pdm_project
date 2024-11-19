@@ -16,7 +16,6 @@ public class VideoRepository {
     public VideoRepository() {
         Video video1 = new Video();
         video1.setVideoName("Spring Boot Tutorial");
-        video1.setUserId("user123");
         video1.setVideoDescription("A comprehensive guide to Spring Boot");
         video1.setVideoUrl("http://example.com/video1");
         video1.setCreatedDate(LocalDate.of(2023, 11, 10));
