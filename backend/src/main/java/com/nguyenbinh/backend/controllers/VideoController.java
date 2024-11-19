@@ -1,11 +1,14 @@
 package com.nguyenbinh.backend.controllers;
 
 import com.nguyenbinh.backend.entities.Video;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.nguyenbinh.backend.services.*;
 import com.nguyenbinh.backend.dtos.VideoRequestDto;
 import com.nguyenbinh.backend.repository.*;
 import com.nguyenbinh.backend.entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,18 +37,23 @@ public class VideoController {
 
     @PostMapping("/save")
     public ResponseEntity<?> saveVideo(@RequestBody VideoRequestDto videoRequest) {
-        // Fetch the existing user
-        Users user = userService.getUserById(videoRequest.getUser_id());
+        Users user = userService.getUserById(videoRequest.getUserId());
 
-        // Create a new video object
         Video video = new Video();
         video.setVideoName(videoRequest.getVideoName());
         video.setVideoDescription(videoRequest.getVideoDescription());
         video.setVideoUrl(videoRequest.getVideoUrl());
-        video.setUser(user); // Associate the existing user
+        video.setUser(user);
 
-        // Save the video
-        videoService.saveVideo(video);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users currentUser = (Users) authentication.getPrincipal();
+
+        if (currentUser.getUserId() == video.getUser().getUserId()) {
+            videoService.saveVideo(video);
+        }
+        else {
+            return ResponseEntity.ok("Denied.");
+        }
 
         return ResponseEntity.ok("Video saved successfully");
     }

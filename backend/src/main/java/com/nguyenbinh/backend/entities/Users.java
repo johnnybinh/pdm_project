@@ -37,11 +37,11 @@ public class Users implements UserDetails {
   // Getter and Setter
 
 
-  public void setUser_id(Long user_id) {
+  public void setUserId(Long user_id) {
     this.userId = userId;
   }
 
-  public Long getUser_id() {
+  public Long getUserId() {
     return userId;
   }
 
