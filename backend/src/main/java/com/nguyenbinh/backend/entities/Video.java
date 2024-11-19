@@ -12,7 +12,7 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private String video_id;
+    private Long video_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
@@ -42,11 +42,11 @@ public class Video {
         this.user = user;
     }
 
-    public String getVideo_id() {
+    public Long getVideo_id() {
         return video_id;
     }
 
-    public void setVideo_id(String video_id) {
+    public void setVideo_id(Long video_id) {
         this.video_id = video_id;
     }
 
