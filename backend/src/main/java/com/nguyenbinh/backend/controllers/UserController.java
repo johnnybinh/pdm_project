@@ -1,5 +1,6 @@
 package com.nguyenbinh.backend.controllers;
 
+import com.nguyenbinh.backend.dtos.UserResponseDto;
 import com.nguyenbinh.backend.services.UserService;
 import com.nguyenbinh.backend.entities.Users;
 
@@ -26,12 +27,19 @@ public class UserController {
 
   @CrossOrigin(origins = "http://localhost:5173/")
   @GetMapping("/me")
-  public ResponseEntity<Users> authenticatedUser() {
+  public ResponseEntity<UserResponseDto> authenticatedUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Users currentUser = (Users) authentication.getPrincipal();
-    return ResponseEntity.ok(currentUser);
-  }
 
+    UserResponseDto userResponseDto = new UserResponseDto(
+            currentUser.getUserId(),
+            currentUser.getEmail(),
+            currentUser.getFullName(),
+            currentUser.getProfilePicture()
+    );
+
+    return ResponseEntity.ok(userResponseDto);
+  }
   @CrossOrigin(origins = "http://localhost:5173/")
   @GetMapping("/")
   public ResponseEntity<List<Users>> allUsers() {
