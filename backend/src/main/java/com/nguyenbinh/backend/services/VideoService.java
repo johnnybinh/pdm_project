@@ -5,13 +5,22 @@ import com.nguyenbinh.backend.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.*;
+
 @Service
 public class VideoService {
 
     @Autowired
     private VideoRepository videoRepository;
 
-    public Video getVideoById(String id) {
-        return videoRepository.findVideoById(id);
+    public Video getVideoById(Long id) {
+        Optional<Video> video = videoRepository.findById(id);
+        return video.orElse(null);
     }
+
+    public Video saveVideo(Video video) {
+        return videoRepository.save(video);
+    }
+
 }
