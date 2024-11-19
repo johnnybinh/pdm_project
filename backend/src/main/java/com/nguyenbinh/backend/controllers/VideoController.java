@@ -31,7 +31,6 @@ public class VideoController {
         return ResponseEntity.ok(video); // Trả về JSON
     }
 
-
     @PostMapping("/save")
     public ResponseEntity<?> saveVideo(@RequestBody VideoRequestDto videoRequest) {
         // Fetch the existing user
