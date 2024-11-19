@@ -14,9 +14,9 @@ import java.util.List;
 @Entity
 public class Users implements UserDetails {
   @Id
-  @GeneratedValue
-  @Column(nullable = false)
-  private Integer user_id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column(unique = true, length = 100, nullable = false)
   private String email;
@@ -34,11 +34,11 @@ public class Users implements UserDetails {
 
 
   public void setUser_id(Integer user_id) {
-    this.user_id = user_id;
+    this.userId = userId;
   }
 
-  public Integer getUser_id() {
-    return user_id;
+  public Long getUser_id() {
+    return userId;
   }
 
   public String getEmail() {

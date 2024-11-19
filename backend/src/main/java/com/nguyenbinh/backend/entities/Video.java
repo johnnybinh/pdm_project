@@ -15,7 +15,7 @@ public class Video {
     private Long videoId; // Changed from String to Long
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private Users user;
 
     @Column(name = "video_name", nullable = false, length = 255)

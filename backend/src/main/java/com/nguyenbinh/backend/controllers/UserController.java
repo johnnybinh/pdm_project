@@ -28,15 +28,7 @@ public class UserController {
   @GetMapping("/me")
   public ResponseEntity<Users> authenticatedUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Access-Control-Allow-Origin", "http://localhost:5173");
-    headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    headers.add("Access-Control-Allow-Credentials", "true");
-
     Users currentUser = (Users) authentication.getPrincipal();
-
     return ResponseEntity.ok(currentUser);
   }
 
