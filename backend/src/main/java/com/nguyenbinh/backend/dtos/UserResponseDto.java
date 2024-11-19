@@ -1,4 +1,4 @@
-package com.nguyenbinh.backend.dto;
+package com.nguyenbinh.backend.dtos;
 
 public class UserResponseDto {
     private Long userId;

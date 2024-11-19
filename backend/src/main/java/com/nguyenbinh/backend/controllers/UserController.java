@@ -29,11 +29,6 @@ public class UserController {
   @GetMapping("/me")
   public ResponseEntity<UserResponseDto> authenticatedUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    if (authentication == null || !(authentication.getPrincipal() instanceof Users)) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
     Users currentUser = (Users) authentication.getPrincipal();
 
     UserResponseDto userResponseDto = new UserResponseDto(
@@ -43,7 +38,7 @@ public class UserController {
             currentUser.getProfilePicture()
     );
 
-    return ResponseEntity.ok(userResponse);
+    return ResponseEntity.ok(userResponseDto);
   }
   @CrossOrigin(origins = "http://localhost:5173/")
   @GetMapping("/")
