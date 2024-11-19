@@ -1,22 +1,36 @@
-import React from "react";
-import { Button } from "../../components/ui/button";
+import React, { useEffect, useState } from "react";
 import { logout } from "../../util/auth";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../util/userUtil";
 
-const HomePage = async () => {
+const HomePage = () => {
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const data = await getUser();
+      setUserData(data);
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleLogout = async () => {
     await logout();
     navigate("/auth/login");
   };
 
-  const userData = await getUser();
-  console.log(userData);
   return (
     <div className="flex justify-center items-center h-screen">
-      <Button onClick={handleLogout}>Logout</Button>
+      {userData ? (
+        <div>
+          <h1>{JSON.stringify(userData.email)}</h1>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      ) : (
+        <p>Loading user data...</p>
+      )}
     </div>
   );
 };
