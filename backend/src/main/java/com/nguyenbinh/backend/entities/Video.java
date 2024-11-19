@@ -14,7 +14,7 @@ public class Video {
     @Column(name = "video_id", nullable = false, updatable = false)
     private Long videoId; // Changed from String to Long
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // Use lazy loading for better performance
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private Users user;
 

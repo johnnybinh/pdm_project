@@ -8,6 +8,6 @@ import com.nguyenbinh.backend.entities.Users;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<Users, Integer> {
+public interface UserRepository extends CrudRepository<Users, Long> {
   Optional<Users> findByEmail(String email);
 }

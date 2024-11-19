@@ -31,16 +31,16 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.cors().configurationSource(corsConfigurationSource()).and().csrf()
-        .disable()
-        .authorizeHttpRequests()
-        .anyRequest()
-        .permitAll()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .disable()
+            .authorizeHttpRequests()
+            .requestMatchers("/auth/**").permitAll()  // Permit all for /auth/**
+            .anyRequest().authenticated()             // Authenticate all other requests
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.Collection;
@@ -15,10 +17,12 @@ import java.util.List;
 public class Users implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
+  @Column(name = "user_id", nullable = false)
   private Long userId;
 
   @Column(unique = true, length = 100, nullable = false)
+  @NotNull(message = "Email is required")
+  @Email(message = "Email should be valid")
   private String email;
 
   @Column(unique = false)
@@ -33,7 +37,7 @@ public class Users implements UserDetails {
   // Getter and Setter
 
 
-  public void setUser_id(Integer user_id) {
+  public void setUser_id(Long user_id) {
     this.userId = userId;
   }
 
