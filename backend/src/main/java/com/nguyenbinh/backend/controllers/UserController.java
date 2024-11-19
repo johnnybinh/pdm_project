@@ -1,6 +1,6 @@
 package com.nguyenbinh.backend.controllers;
 
-import com.nguyenbinh.backend.dtos.UserRespondDto;
+import com.nguyenbinh.backend.dtos.UserResponseDto;
 import com.nguyenbinh.backend.services.UserService;
 import com.nguyenbinh.backend.entities.Users;
 
