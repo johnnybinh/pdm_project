@@ -3,12 +3,15 @@ package com.nguyenbinh.backend.controllers;
 import com.nguyenbinh.backend.dtos.GetPlaylistVideoResponseDto;
 import com.nguyenbinh.backend.dtos.PlaylistAddVideoDto;
 import com.nguyenbinh.backend.dtos.CreatePlaylistDto;
+import com.nguyenbinh.backend.entities.Users;
 import com.nguyenbinh.backend.entities.VideoPlaylist;
 import com.nguyenbinh.backend.entities.Playlist;
 import com.nguyenbinh.backend.services.PlaylistService;
 import com.nguyenbinh.backend.services.VideoPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +28,16 @@ public class PlaylistController {
     // Add a new playlist
     @PostMapping("/create")
     public ResponseEntity<String> createPlaylist(@RequestBody CreatePlaylistDto createPlaylistDto) {
-        playlistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
-        return ResponseEntity.ok("Playlist created successfully");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users currentUser = (Users) authentication.getPrincipal();
+
+        if (currentUser.getUserId() == createPlaylistDto.getUserId()) {
+            playlistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
+            return ResponseEntity.ok("Playlist created successfully");
+        }
+        else {
+            return ResponseEntity.ok("Denied.");
+        }
     }
 
 
