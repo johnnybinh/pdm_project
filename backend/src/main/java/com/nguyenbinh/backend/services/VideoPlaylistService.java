@@ -4,7 +4,6 @@ import com.nguyenbinh.backend.entities.VideoPlaylist;
 import com.nguyenbinh.backend.entities.Playlist;
 import com.nguyenbinh.backend.entities.Users;
 import com.nguyenbinh.backend.repository.VideoPlaylistRepository;
-import com.nguyenbinh.backend.repository.PlaylistRepository;
 import com.nguyenbinh.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,27 +13,10 @@ import java.util.List;
 @Service
 public class VideoPlaylistService {
 
-    private final VideoPlaylistRepository videoPlaylistRepository;
-    private final UserRepository userRepository;
-    private final PlaylistRepository playlistRepository;
-
     @Autowired
-    public VideoPlaylistService(VideoPlaylistRepository videoPlaylistRepository,
-                                UserRepository userRepository,
-                                PlaylistRepository playlistRepository) {
-        this.videoPlaylistRepository = videoPlaylistRepository;
-        this.userRepository = userRepository;
-        this.playlistRepository = playlistRepository;
-    }
-
-    public Playlist createPlaylist(String playlistName, Long userId) {
-        Users user = userRepository.findUserById(userId);
-
-        Playlist playlist = new Playlist();
-        playlist.setPlaylistName(playlistName);
-        playlist.setUser(user);
-        return playlistRepository.save(playlist);
-    }
+    private VideoPlaylistRepository videoPlaylistRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // Fetch all videos in a playlist
     public List<VideoPlaylist> getVideosByPlaylistId(Long playlistId) {

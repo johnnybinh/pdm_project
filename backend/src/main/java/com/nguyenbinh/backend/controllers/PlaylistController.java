@@ -1,9 +1,11 @@
 package com.nguyenbinh.backend.controllers;
 
+import com.nguyenbinh.backend.dtos.GetPlaylistVideoResponseDto;
 import com.nguyenbinh.backend.dtos.PlaylistAddVideoDto;
 import com.nguyenbinh.backend.dtos.CreatePlaylistDto;
 import com.nguyenbinh.backend.entities.VideoPlaylist;
 import com.nguyenbinh.backend.entities.Playlist;
+import com.nguyenbinh.backend.services.PlaylistService;
 import com.nguyenbinh.backend.services.VideoPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,40 +17,47 @@ import java.util.List;
 @RequestMapping("/playlists")
 public class PlaylistController {
 
-    private final VideoPlaylistService videoPlaylistService;
-
     @Autowired
-    public PlaylistController(VideoPlaylistService videoPlaylistService) {
-        this.videoPlaylistService = videoPlaylistService;
-    }
+    private VideoPlaylistService videoPlaylistService;
+    @Autowired
+    private PlaylistService playlistService;
 
     // Add a new playlist
     @PostMapping("/create")
-    public ResponseEntity<Playlist> createPlaylist(@RequestBody CreatePlaylistDto createPlaylistDto) {
-        Playlist newPlaylist = videoPlaylistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
-        return ResponseEntity.ok(newPlaylist);
+    public ResponseEntity<String> createPlaylist(@RequestBody CreatePlaylistDto createPlaylistDto) {
+        playlistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
+        return ResponseEntity.ok("Playlist created successfully");
     }
 
 
     // Get all videos in a playlist
     @GetMapping("/{playlistId}")
-    public ResponseEntity<List<VideoPlaylist>> getVideosByPlaylistId(@PathVariable Long playlistId) {
+    public ResponseEntity<GetPlaylistVideoResponseDto> getVideosByPlaylistId(@PathVariable Long playlistId) {
         List<VideoPlaylist> videos = videoPlaylistService.getVideosByPlaylistId(playlistId);
-        return ResponseEntity.ok(videos);
+
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, videos);
+
+        return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
 
     // Get all playlists containing a specific video
     @GetMapping("/{playlistId}/videos/{videoId}")
-    public ResponseEntity<List<VideoPlaylist>> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId, @PathVariable Long videoId) {
+    public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId, @PathVariable Long videoId) {
         List<VideoPlaylist> playlists = videoPlaylistService.getPlaylistsByPlaylistAndVideoId(playlistId, videoId);
-        return ResponseEntity.ok(playlists);
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, playlists);
+
+        return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
 
 
     // Add a video to a playlist
-    @PostMapping("/save")
-    public ResponseEntity<String> addVideoToPlaylist(@RequestBody PlaylistAddVideoDto playlistAddVideo) {
-        videoPlaylistService.addVideoToPlaylist(playlistAddVideo.getPlaylistId(), playlistAddVideo.getVideoId());
+    @PostMapping("/{playlistId}/save")
+    public ResponseEntity<String> addVideoToPlaylist(
+            @PathVariable Long playlistId,
+            @RequestBody PlaylistAddVideoDto playlistAddVideo) {
+
+        // Use the playlistId from the path and videoId from the request body
+        videoPlaylistService.addVideoToPlaylist(playlistId, playlistAddVideo.getVideoId());
         return ResponseEntity.ok("Video added to playlist successfully");
     }
 

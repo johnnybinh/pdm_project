@@ -15,11 +15,11 @@ public class PlaylistService {
     private PlaylistRepository playlistRepository;
 
     public Playlist getPlaylistById(Long id) {
-        Optional<Playlist> playlistOptional = playlistRepository.findById(id);
-        return playlistOptional.orElse(null);
+        Optional<Playlist> playlist = playlistRepository.findPlaylistById(id);
+        return playlist.orElse(null);
     }
 
-    public Playlist savePlaylist(Playlist playlist) {
-        return playlistRepository.save(playlist);
+    public void createPlaylist(String playlistName, Long userId) {
+        playlistRepository.createPlaylist(playlistName, userId);
     }
 }
