@@ -27,4 +27,14 @@ public class VideoService {
     public void saveVideo(Video video) {
         videoRepository.saveVideo(video.getVideoName(), video.getVideoDescription(), video.getVideoUrl(), video.getUser().getUserId());
     }
+
+    public List<Video> searchVideos(String query) {
+
+        return videoRepository.searchVideos(query);
+
+    }
+
+    public List<Video> getVideosByUserId(Long userId) {
+        return videoRepository.findAllVideosByUserId(userId);
+    }
 }

@@ -15,7 +15,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/videos")
-@CrossOrigin(origins = "http://localhost:5173") // Để frontend truy cập
+@CrossOrigin(origins = "http://localhost:5173")
 public class VideoController {
 
     @Autowired
@@ -63,5 +63,10 @@ public class VideoController {
         List<Video> video = videoService.allVideo();
 
         return ResponseEntity.ok(video);
+    }
+
+    @GetMapping("/search")
+    public List<Video> searchVideos(@RequestParam String query) {
+        return videoService.searchVideos(query);
     }
 }

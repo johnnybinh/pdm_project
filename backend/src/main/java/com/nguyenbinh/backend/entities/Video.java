@@ -2,19 +2,21 @@ package com.nguyenbinh.backend.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Table;
 
 import java.time.LocalDate;
 
-@Table(name = "videos")
+@jakarta.persistence.Table(name = "videos")
+@Table(appliesTo = "videos", comment = "FULLTEXT KEY (video_name)")
 @Entity
 public class Video {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "video_id", nullable = false, updatable = false)
-    private Long videoId; // Changed from String to Long
+    private Long videoId;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Use lazy loading for better performance
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private Users user;
 
