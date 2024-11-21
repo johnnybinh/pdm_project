@@ -52,8 +52,12 @@ public class PlaylistController {
     public ResponseEntity<GetPlaylistVideoResponseDto> getVideosByPlaylistId(@PathVariable Long playlistId) {
         List<VideoPlaylist> videos = videoPlaylistService.getVideosByPlaylistId(playlistId);
 
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, videos);
+        // Check if the videos list is empty, indicating the playlist might not exist
+        if (videos == null || videos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, videos);
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
 
