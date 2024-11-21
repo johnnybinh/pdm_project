@@ -30,14 +30,19 @@ public class PlaylistController {
     @PostMapping("/create")
     public ResponseEntity<String> createPlaylist(@RequestBody CreatePlaylistDto createPlaylistDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Users currentUser = (Users) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        if (currentUser.getUserId() == createPlaylistDto.getUserId()) {
-            playlistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
-            return ResponseEntity.ok("Playlist created successfully");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
+        if (principal instanceof Users) {
+            Users currentUser = (Users) principal;
+
+            if (currentUser.getUserId().equals(createPlaylistDto.getUserId())) {
+                playlistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
+                return ResponseEntity.ok("Playlist created successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
         }
     }
 
@@ -68,16 +73,21 @@ public class PlaylistController {
             @PathVariable Long playlistId,
             @RequestBody PlaylistAddVideoDto playlistAddVideo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Users currentUser = (Users) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        if (playlistService.isPlaylistOwnedByUser(playlistId, currentUser.getUserId())) {
-            videoPlaylistService.addVideoToPlaylist(playlistId, playlistAddVideo.getVideoId());
-            return ResponseEntity.ok("Video added to playlist successfully");
+        if (principal instanceof Users) {
+            Users currentUser = (Users) principal;
+
+            if (playlistService.isPlaylistOwnedByUser(playlistId, currentUser.getUserId())) {
+                videoPlaylistService.addVideoToPlaylist(playlistId, playlistAddVideo.getVideoId());
+                return ResponseEntity.ok("Video added to playlist successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
+            }
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
         }
     }
-
     // Remove a video from a playlist
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeVideoFromPlaylist(@RequestParam Long playlistId, @RequestParam Long videoId) {
