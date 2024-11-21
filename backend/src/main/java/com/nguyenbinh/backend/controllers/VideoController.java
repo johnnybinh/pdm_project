@@ -33,12 +33,16 @@ public class VideoController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(video); // Trả về JSON
+        return ResponseEntity.ok(video);
     }
 
     @PostMapping("/save")
     public ResponseEntity<?> saveVideo(@RequestBody VideoRequestDto videoRequest) {
         Users user = userService.getUserById(videoRequest.getUserId());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
 
         Video video = new Video();
         video.setVideoName(videoRequest.getVideoName());
@@ -47,16 +51,21 @@ public class VideoController {
         video.setUser(user);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Users currentUser = (Users) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        if (currentUser.getUserId() == video.getUser().getUserId()) {
-            videoService.saveVideo(video);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
-        }
+        if (principal instanceof Users) {
+            Users currentUser = (Users) principal;
 
-        return ResponseEntity.ok("Video saved successfully");
+            // Use equals() to compare user IDs safely
+            if (currentUser.getUserId().equals(video.getUser().getUserId())) {
+                videoService.saveVideo(video);
+                return ResponseEntity.ok("Video saved successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
+        }
     }
 
     @GetMapping("/")
