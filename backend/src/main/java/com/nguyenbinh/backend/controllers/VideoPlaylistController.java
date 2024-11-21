@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.*;
 public class VideoPlaylistController {
     @Autowired
     private PlaylistService playlistService;
-
     @Autowired
     private VideoService videoService;
-
     @Autowired
     private UserService userService;
-
 }

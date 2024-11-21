@@ -23,37 +23,31 @@ import org.springframework.http.HttpHeaders;
 @CrossOrigin(origins = "http://localhost:5173/")
 public class UserController {
 
-  private final UserService userService;
-  private final VideoService videoService;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private VideoService videoService;
 
-  public UserController(UserService userService,
-                        VideoService videoService) {
+  @CrossOrigin(origins = "http://localhost:5173/")
+  @GetMapping("/me")
+  public ResponseEntity<UserResponseWithVideosDto> authenticatedUser() {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      Users currentUser = (Users) authentication.getPrincipal();
 
-    this.userService = userService;
-    this.videoService = videoService;
+      List<Video> userVideos = videoService.getVideosByUserId(currentUser.getUserId());
 
+      List<VideoResponseDto> videos = userVideos.stream()
+              .map(VideoResponseDto::fromVideo)
+              .toList();
+
+      UserResponseWithVideosDto response = new UserResponseWithVideosDto(
+              currentUser.getUserId(),
+              currentUser.getFullName(),
+              videos
+      );
+
+      return ResponseEntity.ok(response);
   }
-
-      @CrossOrigin(origins = "http://localhost:5173/")
-      @GetMapping("/me")
-      public ResponseEntity<UserResponseWithVideosDto> authenticatedUser() {
-          Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-          Users currentUser = (Users) authentication.getPrincipal();
-
-          List<Video> userVideos = videoService.getVideosByUserId(currentUser.getUserId());
-
-          List<VideoResponseDto> videos = userVideos.stream()
-                  .map(VideoResponseDto::fromVideo)
-                  .toList();
-
-          UserResponseWithVideosDto response = new UserResponseWithVideosDto(
-                  currentUser.getUserId(),
-                  currentUser.getFullName(),
-                  videos
-          );
-
-          return ResponseEntity.ok(response);
-      }
 
   @CrossOrigin(origins = "http://localhost:5173/")
   @GetMapping("/")
