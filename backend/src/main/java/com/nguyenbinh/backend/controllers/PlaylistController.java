@@ -1,7 +1,9 @@
 package com.nguyenbinh.backend.controllers;
 
 import com.nguyenbinh.backend.dtos.PlaylistAddVideoDto;
+import com.nguyenbinh.backend.dtos.CreatePlaylistDto;
 import com.nguyenbinh.backend.entities.VideoPlaylist;
+import com.nguyenbinh.backend.entities.Playlist;
 import com.nguyenbinh.backend.services.VideoPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,14 @@ public class PlaylistController {
     public PlaylistController(VideoPlaylistService videoPlaylistService) {
         this.videoPlaylistService = videoPlaylistService;
     }
+
+    // Add a new playlist
+    @PostMapping("/create")
+    public ResponseEntity<Playlist> createPlaylist(@RequestBody CreatePlaylistDto createPlaylistDto) {
+        Playlist newPlaylist = videoPlaylistService.createPlaylist(createPlaylistDto.getPlaylistName(), createPlaylistDto.getUserId());
+        return ResponseEntity.ok(newPlaylist);
+    }
+
 
     // Get all videos in a playlist
     @GetMapping("/{playlistId}")
