@@ -26,7 +26,13 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
                    @Param("videoDescription") String videoDescription,
                    @Param("videoUrl") String videoUrl,
                    @Param("userId") Long UserId);
-    // Retrieve videos by user ID using native SQL
+
     @Query(value = "SELECT * FROM videos WHERE user_id = :userId", nativeQuery = true)
     List<Video> findByUserId(@Param("userId") Long userId);
+
+    @Query(value = "SELECT * FROM videos WHERE MATCH(video_name) AGAINST (?1 IN NATURAL LANGUAGE MODE)", nativeQuery = true)
+    List<Video> searchVideos(String query);
+
+    @Query(value = "SELECT * FROM videos WHERE user_id = :userId", nativeQuery = true)
+    List<Video> findAllVideosByUserId(@Param("userId") Long userId);
 }

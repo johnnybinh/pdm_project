@@ -1,10 +1,13 @@
 package com.nguyenbinh.backend.controllers;
 
-import com.nguyenbinh.backend.dtos.UserResponseDto;
+import com.nguyenbinh.backend.dtos.UserResponseWithVideosDto;
+import com.nguyenbinh.backend.dtos.VideoResponseDto;
 import com.nguyenbinh.backend.services.UserService;
+import com.nguyenbinh.backend.services.VideoService;
 import com.nguyenbinh.backend.entities.Users;
+import com.nguyenbinh.backend.entities.Video;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,27 +22,39 @@ import org.springframework.http.HttpHeaders;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/")
 public class UserController {
+
   private final UserService userService;
+  private final VideoService videoService;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService,
+                        VideoService videoService) {
+
     this.userService = userService;
+    this.videoService = videoService;
+
   }
 
-  @CrossOrigin(origins = "http://localhost:5173/")
-  @GetMapping("/me")
-  public ResponseEntity<UserResponseDto> authenticatedUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Users currentUser = (Users) authentication.getPrincipal();
+      @CrossOrigin(origins = "http://localhost:5173/")
+      @GetMapping("/me")
+      public ResponseEntity<UserResponseWithVideosDto> authenticatedUser() {
+          Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+          Users currentUser = (Users) authentication.getPrincipal();
 
-    UserResponseDto userResponseDto = new UserResponseDto(
-            currentUser.getUserId(),
-            currentUser.getEmail(),
-            currentUser.getFullName(),
-            currentUser.getProfilePicture()
-    );
+          List<Video> userVideos = videoService.getVideosByUserId(currentUser.getUserId());
 
-    return ResponseEntity.ok(userResponseDto);
-  }
+          List<VideoResponseDto> videos = userVideos.stream()
+                  .map(VideoResponseDto::fromVideo)
+                  .toList();
+
+          UserResponseWithVideosDto response = new UserResponseWithVideosDto(
+                  currentUser.getUserId(),
+                  currentUser.getFullName(),
+                  videos
+          );
+
+          return ResponseEntity.ok(response);
+      }
+
   @CrossOrigin(origins = "http://localhost:5173/")
   @GetMapping("/")
   public ResponseEntity<List<Users>> allUsers() {
