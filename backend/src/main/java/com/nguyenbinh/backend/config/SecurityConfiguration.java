@@ -33,8 +33,8 @@ public class SecurityConfiguration {
     http.cors().configurationSource(corsConfigurationSource()).and().csrf()
             .disable()
             .authorizeHttpRequests()
-            .requestMatchers("/auth/**").permitAll()  // Permit all for /auth/**
-            .anyRequest().authenticated()             // Authenticate all other requests
+            .anyRequest()
+            .permitAll()
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -44,6 +44,7 @@ public class SecurityConfiguration {
 
     return http.build();
   }
+
 
   @Bean
   CorsConfigurationSource corsConfigurationSource() {

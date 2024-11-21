@@ -6,9 +6,8 @@ import com.nguyenbinh.backend.services.UserService;
 import com.nguyenbinh.backend.services.VideoService;
 import com.nguyenbinh.backend.entities.Users;
 import com.nguyenbinh.backend.entities.Video;
-
 import java.util.*;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

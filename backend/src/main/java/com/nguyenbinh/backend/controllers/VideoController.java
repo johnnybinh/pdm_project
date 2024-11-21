@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/videos")
@@ -51,7 +53,7 @@ public class VideoController {
             videoService.saveVideo(video);
         }
         else {
-            return ResponseEntity.ok("Denied.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied.");
         }
 
         return ResponseEntity.ok("Video saved successfully");

@@ -15,8 +15,8 @@ import java.util.Optional;
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
-    @Query(value = "SELECT * FROM playlists p WHERE vp.playlist_id = :playlistId", nativeQuery = true)
-    Optional<Playlist> findPlaylistById(@Param("playlistId") Long playlistId);
+    @Query(value = "SELECT * FROM playlists p WHERE p.playlist_id = :playlistId", nativeQuery = true)
+    Playlist findPlaylistById(@Param("playlistId") Long playlistId);
 
     @Query(value = "SELECT * FROM playlists", nativeQuery = true)
     List<Video> findAllPlaylists();
