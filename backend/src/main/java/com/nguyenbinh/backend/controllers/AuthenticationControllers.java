@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthenticationControllers {
-  private final JwtService jwtService;
-  private final AuthenticationService authenticationService;
 
-  public AuthenticationControllers(JwtService jwtService, AuthenticationService authenticationService) {
-    this.jwtService = jwtService;
-    this.authenticationService = authenticationService;
-  }
+  @Autowired
+  private JwtService jwtService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
   @PostMapping("/signup")
   public ResponseEntity<Users> register(@RequestBody UserRegisterDto registerUserDto) {
