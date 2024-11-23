@@ -5,6 +5,9 @@ import Register from "./page/auth/register/Register";
 import Login from "./page/auth/login/Login";
 import HomePage from "./page/home/HomePage";
 import Upload from "./page/upload/Upload";
+import ProfilePage from "./page/Profile/ProfilePage";
+import SearchPage from "./page/Search/Search";
+import VideosPage from "./page/Videos/VideosPage";
 
 const App = () => {
   return (
@@ -17,6 +20,9 @@ const App = () => {
         </Route>
         <Route path="/home" element={<HomePage />} />
         <Route path="/upload" element={<Upload />}></Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/search" element={<SearchPage />}></Route>
+        <Route path="/videos/:id" element={<VideosPage />}></Route>
       </Routes>
     </ThemeProvider>
   );
