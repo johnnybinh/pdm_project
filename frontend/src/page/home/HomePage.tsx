@@ -11,6 +11,9 @@ import {
   CardFooter,
 } from "../../components/ui/card";
 import ReactPlayer from "react-player";
+import NavBar from "../components/NavBar";
+import { Link } from "react-router-dom";
+import { Button } from "../../components/ui/button";
 
 const fetchVideos = async () => {
   const response = await axios.get("http://localhost:8080/videos/", {
@@ -41,31 +44,39 @@ const HomePage = () => {
   }
 
   return (
-    <div className="p-10">
-      <h1>Latest Videos</h1>
-      <div className="flex">
-        {videos.map((video) => (
-          <Card className="w-1/4" key={video.id}>
-            <CardHeader>
-              <ReactPlayer
-                style={{ position: "relative" }}
-                url={video.videoUrl}
-                controls={true}
-                width="100%"
-                height="100%"
-              />
-              <CardTitle>{video.videoName}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Description: {video.videoDescription}
-              </CardDescription>
-            </CardContent>
-            <CardFooter>
-              <h1>uploaded by: {video.user.fullName}</h1>
-            </CardFooter>
-          </Card>
-        ))}
+    <div>
+      <NavBar />
+      <div className="p-10 flex gap-4 flex-col h-screen">
+        <h1 className="text-4xl font-bold">Latest Videos</h1>
+        <div className="flex gap-2">
+          {videos.map((video) => (
+            <Card className="w-1/4" key={video.id}>
+              <CardHeader>
+                <ReactPlayer
+                  style={{ position: "relative" }}
+                  url={video.videoUrl}
+                  controls={true}
+                  width="100%"
+                  height="15rem"
+                />
+                <CardTitle>{video.videoName}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Description: {video.videoDescription}
+                </CardDescription>
+              </CardContent>
+              <CardFooter>
+                <h1>uploaded by: {video.user.fullName}</h1>
+              </CardFooter>
+              <CardFooter>
+                <Link to={`/videos/${video.videoId}`}>
+                  <Button className="justify-self-end ">Watch</Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
