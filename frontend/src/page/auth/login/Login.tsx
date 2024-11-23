@@ -52,7 +52,7 @@ const Login = () => {
         title: "Login Succesfully",
         description: "yay",
       });
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       toast({
         variant: "destructive",
