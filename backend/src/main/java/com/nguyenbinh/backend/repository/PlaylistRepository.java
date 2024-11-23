@@ -19,7 +19,10 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     Playlist findPlaylistById(@Param("playlistId") Long playlistId);
 
     @Query(value = "SELECT * FROM playlists", nativeQuery = true)
-    List<Video> findAllPlaylists();
+    List<Playlist> findAllPlaylists();
+
+    @Query(value = "SELECT * FROM playlists p WHERE p.user_id = :userId", nativeQuery = true)
+    List<Playlist> findAllPlaylistsByUserId(@Param("userId") Long userId);
 
     @Modifying
     @Transactional
