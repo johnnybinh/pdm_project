@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequestMapping("/users")
 @RestController

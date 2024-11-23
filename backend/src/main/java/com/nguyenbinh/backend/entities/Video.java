@@ -29,11 +29,10 @@ public class Video {
     @Column(name = "video_url", nullable = false, length = 2083)
     private String videoUrl;
 
-    @CreationTimestamp
-    @Column(name = "created_date", updatable = false)
-    private LocalDate createdDate;
+//    @CreationTimestamp
+//    @Column(name = "created_date", updatable = false)
+//    private LocalDate createdDate;
 
-    // Getters and Setters
     public Long getVideoId() {
         return videoId;
     }
@@ -74,11 +73,11 @@ public class Video {
         this.videoUrl = videoUrl;
     }
 
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
+//    public LocalDate getCreatedDate() {
+//        return createdDate;
+//    }
+//
+//    public void setCreatedDate(LocalDate createdDate) {
+//        this.createdDate = createdDate;
+//    }
 }
