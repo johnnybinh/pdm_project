@@ -19,19 +19,10 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     @Query(value = "SELECT * FROM videos", nativeQuery = true)
     List<Video> findAllVideos();
 
-//    @Modifying
-//    @Transactional
-//    @Query(value = "INSERT INTO videos (video_name, video_description,video_url,user_id,created_date)"
-//    + "VALUES (:videoName, :videoDescription,:videoUrl, :userId, NOW())", nativeQuery = true)
-//    void saveVideo(@Param("videoName") String videoName,
-//                   @Param("videoDescription") String videoDescription,
-//                   @Param("videoUrl") String videoUrl,
-//                   @Param("userId") Long UserId);
-
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO videos (video_name, video_description,video_url,user_id)"
-            + "VALUES (:videoName, :videoDescription,:videoUrl, :userId)", nativeQuery = true)
+    @Query(value = "INSERT INTO videos (video_name, video_description,video_url,user_id,created_date)"
+    + "VALUES (:videoName, :videoDescription,:videoUrl, :userId, NOW())", nativeQuery = true)
     void saveVideo(@Param("videoName") String videoName,
                    @Param("videoDescription") String videoDescription,
                    @Param("videoUrl") String videoUrl,
