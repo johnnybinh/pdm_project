@@ -5,7 +5,7 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 
 const VideosPage = () => {
-  let params = useParams();
+  const params = useParams();
   const [videos, setVideos] = useState();
   useEffect(() => {
     try {
@@ -46,10 +46,10 @@ const VideosPage = () => {
               <div className=" w-3/4">
                 <h1 className="text-2xl font-bold">{videos.videoName}</h1>
                 <h1 className="text-2xl ">
-                  Description: {videos.videoDescription}
+                  Description: {JSON.stringify(videos)}
                 </h1>
                 <div>
-                  <h1 className="flex items-center gap-2 text-2xl">
+                  {/* <h1 className="flex items-center gap-2 text-2xl">
                     <img
                       className="rounded-full"
                       src={videos.user.profilePicture}
@@ -57,7 +57,7 @@ const VideosPage = () => {
                       alt=""
                     />{" "}
                     {videos.user.fullName}{" "}
-                  </h1>
+                  </h1> */}
                 </div>
               </div>
             </div>

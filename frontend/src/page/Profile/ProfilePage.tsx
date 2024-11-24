@@ -12,6 +12,7 @@ import {
 import ReactPlayer from "react-player";
 import { Button } from "../../components/ui/button";
 import { Link } from "react-router-dom";
+import { NewPlaylistDialog } from "./components/NewPlaylistDialog";
 
 const ProfilePage = () => {
   const { user, loading } = useUser();
@@ -65,6 +66,12 @@ const ProfilePage = () => {
                   </CardFooter>
                 </Card>
               ))}
+            </div>
+            <div className="text-2xl font-bold">
+              My Playlist <NewPlaylistDialog />
+            </div>
+            <div>
+              <pre>{JSON.stringify(user.playlists)}</pre>
             </div>
           </div>
         </div>
