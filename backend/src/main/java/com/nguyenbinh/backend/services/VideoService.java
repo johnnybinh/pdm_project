@@ -22,33 +22,58 @@ public class VideoService {
         Optional<Video> video = videoRepository.findVideoById(id);
         return video.orElse(null);
     }
-    
-    public VideoDetailsDto getVideoDetails(Long videoId) {
-        Video video = videoRepository.findVideoById(videoId).orElseThrow(() -> new RuntimeException("Video not found"));
 
-        // Fetch
+    public VideoDetailsDto getVideoDetails(Long videoId) {
+        Video video = videoRepository.findVideoById(videoId)
+                .orElseThrow(() -> new RuntimeException("Video not found"));
+
         List<Object[]> results = videoRepository.findSimilarVideos(videoId, video.getVideoName());
 
-        List<VideoSimilarityDto> VideoHaveSimilarWords = results.stream()
-                .map(row -> new VideoSimilarityDto(
-                        ((Number) row[0]).longValue(),  // videoId
-                        (String) row[1],               // videoName
-                        ((Number) row[2]).longValue()   // similarWords
-                ))
+        List<VideoSimilarityDto> videoHaveSimilarWords = results.stream()
+                .map(row -> {
+                    Long similarVideoId = ((Number) row[0]).longValue();
+                    String similarVideoName = (String) row[1];
+                    Long similarWords = ((Number) row[2]).longValue();
+
+                    Video similarVideo = videoRepository.findVideoById(similarVideoId)
+                            .orElseThrow(() -> new RuntimeException("Similar video not found"));
+
+                    return new VideoSimilarityDto(
+                            similarVideo.getVideoId(),
+                            similarVideo.getVideoName(),
+                            similarVideo.getVideoDescription(),
+                            similarVideo.getVideoUrl(),
+                            similarVideo.getCreatedDate(),
+                            new UserResponseDto(
+                                    similarVideo.getUser().getUserId(),
+                                    similarVideo.getUser().getEmail(),
+                                    similarVideo.getUser().getFullName(),
+                                    similarVideo.getUser().getProfilePicture()
+                            ),
+                            similarWords
+                    );
+                })
                 .collect(Collectors.toList());
-//        for (Object[] row : results) {
-//            System.out.print(row[0] + " " + row[1] + " " + row[2]);
-//            System.out.println();
-//        }
-        List<VideoSimilarityDto> simlarVideos = new ArrayList<>();
-        // Process
-        for (VideoSimilarityDto x : VideoHaveSimilarWords) {
-            if (x.getSimilarWords() > 0) {
-                simlarVideos.add(new VideoSimilarityDto(x.getVideoId(), x.getVideoName(), x.getSimilarWords()));
-            }
-        }
-        simlarVideos.sort(Comparator.comparing(VideoSimilarityDto::getSimilarWords).reversed());
-        return new VideoDetailsDto(video.getVideoId(), video.getVideoName(), simlarVideos);
+
+        List<VideoSimilarityDto> similarVideos = videoHaveSimilarWords.stream()
+                .filter(dto -> dto.getSimilarWords() > 0)
+                .sorted(Comparator.comparing(VideoSimilarityDto::getSimilarWords).reversed())
+                .collect(Collectors.toList());
+
+        return new VideoDetailsDto(
+                video.getVideoId(),
+                video.getVideoName(),
+                video.getVideoDescription(),
+                video.getVideoUrl(),
+                video.getCreatedDate(),
+                new UserResponseDto(
+                        video.getUser().getUserId(),
+                        video.getUser().getEmail(),
+                        video.getUser().getFullName(),
+                        video.getUser().getProfilePicture()
+                ),
+                similarVideos
+        );
     }
 
     public List<Video> allVideo() {
