@@ -14,12 +14,12 @@ public class VideoPlaylist {
     private Long videoPlaylistId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @MapsId("playlistId") // Maps this field to the composite key's playlistId
+    @MapsId("playlistId")
     @JoinColumn(name = "playlist_id", referencedColumnName = "playlist_id", nullable = false)
     private Playlist playlist;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @MapsId("videoId") // Maps this field to the composite key's videoId
+    @MapsId("videoId")
     @JoinColumn(name = "video_id", referencedColumnName = "video_id", nullable = false)
     private Video video;
 

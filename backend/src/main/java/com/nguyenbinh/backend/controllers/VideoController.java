@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 
 
@@ -79,6 +80,9 @@ public class VideoController {
 
     @GetMapping("/search")
     public List<Video> searchVideos(@RequestParam String query) {
-        return videoService.searchVideos(query);
+        String formattedQuery = Arrays.stream(query.split(" "))
+                .map(word -> word + "*")
+                .collect(Collectors.joining(" "));
+        return videoService.searchVideos(formattedQuery);
     }
 }
