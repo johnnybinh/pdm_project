@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GetPlaylistVideoResponseDto{
+    private String userFullName;
     private Long playlistId;
     private List<Video> videos;
 
-    public GetPlaylistVideoResponseDto(Long playlistId, List<VideoPlaylist> videoPlaylists) {
+    public GetPlaylistVideoResponseDto(String userFullName ,Long playlistId, List<VideoPlaylist> videoPlaylists) {
+        this.userFullName = userFullName;
         this.playlistId = playlistId;
         videos = videoPlaylists.stream()
                 .map(VideoPlaylist::getVideo)
@@ -33,5 +35,13 @@ public class GetPlaylistVideoResponseDto{
 
     public void setVideos(List<Video> videos) {
         this.videos = videos;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
+    }
+
+    public void setUserFullName(String userFullName) {
+        this.userFullName = userFullName;
     }
 }
