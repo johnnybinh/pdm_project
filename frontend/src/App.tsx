@@ -8,6 +8,7 @@ import Upload from "./page/upload/Upload";
 import ProfilePage from "./page/Profile/ProfilePage";
 import SearchPage from "./page/Search/Search";
 import VideosPage from "./page/Videos/VideosPage";
+import PlaylistDashboard from "./page/Playlist/PlaylistDashboard";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />}></Route>
         <Route path="/search" element={<SearchPage />}></Route>
         <Route path="/videos/:id" element={<VideosPage />}></Route>
+        <Route path="/playlist" element={<PlaylistDashboard />}></Route>
       </Routes>
     </ThemeProvider>
   );
