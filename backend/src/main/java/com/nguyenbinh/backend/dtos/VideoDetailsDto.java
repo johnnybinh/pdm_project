@@ -15,7 +15,7 @@ public class VideoDetailsDto {
 
     // Constructor
     public VideoDetailsDto(Long videoId, String videoName, String videoDescription, String videoUrl,
-                           LocalDate createdDate, UserResponseDto user, List<VideoSimilarityDto> recommendations) {
+            LocalDate createdDate, UserResponseDto user, List<VideoSimilarityDto> recommendations) {
         this.videoId = videoId;
         this.videoName = videoName;
         this.videoDescription = videoDescription;

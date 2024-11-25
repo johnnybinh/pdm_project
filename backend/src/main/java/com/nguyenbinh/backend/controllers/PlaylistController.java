@@ -46,16 +46,12 @@ public class PlaylistController {
         }
     }
 
-
     // Get all videos in a playlist
     @GetMapping("/{playlistId}")
     public ResponseEntity<GetPlaylistVideoResponseDto> getVideosByPlaylistId(@PathVariable Long playlistId) {
         List<VideoPlaylist> videos = videoPlaylistService.getVideosByPlaylistId(playlistId);
 
         // Check if the videos list is empty, indicating the playlist might not exist
-        if (videos == null || videos.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
 
         GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, videos);
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
@@ -63,13 +59,14 @@ public class PlaylistController {
 
     // Get all playlists containing a specific video
     @GetMapping("/{playlistId}/videos/{videoId}")
-    public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId, @PathVariable Long videoId) {
+    public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId,
+            @PathVariable Long videoId) {
         List<VideoPlaylist> playlists = videoPlaylistService.getPlaylistsByPlaylistAndVideoId(playlistId, videoId);
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, playlists);
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId,
+                playlists);
 
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
-
 
     // Add a video to a playlist
     @PostMapping("/{playlistId}/save")
@@ -92,6 +89,7 @@ public class PlaylistController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
         }
     }
+
     // Remove a video from a playlist
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeVideoFromPlaylist(@RequestParam Long playlistId, @RequestParam Long videoId) {
