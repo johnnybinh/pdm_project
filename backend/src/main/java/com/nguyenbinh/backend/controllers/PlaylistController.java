@@ -49,11 +49,13 @@ public class PlaylistController {
     // Get all videos in a playlist
     @GetMapping("/{playlistId}")
     public ResponseEntity<GetPlaylistVideoResponseDto> getVideosByPlaylistId(@PathVariable Long playlistId) {
+        Playlist playlist = playlistService.getPlaylistById(playlistId);
         List<VideoPlaylist> videos = videoPlaylistService.getVideosByPlaylistId(playlistId);
 
         // Check if the videos list is empty, indicating the playlist might not exist
 
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId, videos);
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(
+                playlist.getUser().getFullName(), playlistId, videos, playlist.getPlaylistName());
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
 
@@ -61,9 +63,12 @@ public class PlaylistController {
     @GetMapping("/{playlistId}/videos/{videoId}")
     public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId,
             @PathVariable Long videoId) {
+
+        Playlist playlist = playlistService.getPlaylistById(playlistId);
         List<VideoPlaylist> playlists = videoPlaylistService.getPlaylistsByPlaylistAndVideoId(playlistId, videoId);
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlistId,
-                playlists);
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(
+                playlist.getUser().getFullName(), playlistId,
+                playlists, playlist.getPlaylistName());
 
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }

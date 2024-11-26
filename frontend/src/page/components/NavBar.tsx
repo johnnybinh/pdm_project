@@ -45,9 +45,11 @@ const NavBar = () => {
                   <Link to={"/search"}>
                     <Button variant={"link"}>Search</Button>
                   </Link>
-                  <Link to={"/playlist"}>
+
+                  {/* <Link to={"/playlist"}>
                     <Button variant={"link"}>Playlist</Button>
-                  </Link>
+                  </Link> */}
+
                   <Link to={"/profile"}>
                     <Button variant={"link"}>Profile</Button>
                   </Link>
