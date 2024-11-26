@@ -46,10 +46,10 @@ const VideosPage = () => {
               <div className=" w-3/4">
                 <h1 className="text-2xl font-bold">{videos.videoName}</h1>
                 <h1 className="text-2xl ">
-                  Description: {JSON.stringify(videos)}
+                  Description: {videos.videoDescription}
                 </h1>
                 <div>
-                  {/* <h1 className="flex items-center gap-2 text-2xl">
+                  <h1 className="flex items-center gap-2 text-2xl">
                     <img
                       className="rounded-full"
                       src={videos.user.profilePicture}
@@ -57,7 +57,7 @@ const VideosPage = () => {
                       alt=""
                     />{" "}
                     {videos.user.fullName}{" "}
-                  </h1> */}
+                  </h1>
                 </div>
               </div>
             </div>

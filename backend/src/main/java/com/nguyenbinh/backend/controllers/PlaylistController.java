@@ -46,27 +46,31 @@ public class PlaylistController {
         }
     }
 
-
     // Get all videos in a playlist
     @GetMapping("/{playlistId}")
     public ResponseEntity<GetPlaylistVideoResponseDto> getVideosByPlaylistId(@PathVariable Long playlistId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
         List<VideoPlaylist> videos = videoPlaylistService.getVideosByPlaylistId(playlistId);
 
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlist.getUser().getFullName() ,playlistId, videos);
+        // Check if the videos list is empty, indicating the playlist might not exist
+
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(
+                playlist.getUser().getFullName(), playlistId, videos, playlist.getPlaylistName());
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
 
     // Get all playlists containing a specific video
     @GetMapping("/{playlistId}/videos/{videoId}")
-    public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId, @PathVariable Long videoId) {
+    public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId,
+            @PathVariable Long videoId) {
         Playlist playlist = playlistService.getPlaylistById(playlistId);
         List<VideoPlaylist> playlists = videoPlaylistService.getPlaylistsByPlaylistAndVideoId(playlistId, videoId);
-        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(playlist.getUser().getFullName() ,playlistId, playlists);
+        GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(
+                playlist.getUser().getFullName(), playlistId,
+                playlists, playlist.getPlaylistName());
 
         return ResponseEntity.ok(getPlaylistVideoResponseDto);
     }
-
 
     // Add a video to a playlist
     @PostMapping("/{playlistId}/save")
@@ -89,6 +93,7 @@ public class PlaylistController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated.");
         }
     }
+
     // Remove a video from a playlist
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeVideoFromPlaylist(@RequestParam Long playlistId, @RequestParam Long videoId) {

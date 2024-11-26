@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GetPlaylistVideoResponseDto{
+public class GetPlaylistVideoResponseDto {
     private String userFullName;
     private Long playlistId;
     private List<Video> videos;
+    private String playlistName;
 
-    public GetPlaylistVideoResponseDto(String userFullName ,Long playlistId, List<VideoPlaylist> videoPlaylists) {
+    public GetPlaylistVideoResponseDto(String userFullName, Long playlistId, List<VideoPlaylist> videoPlaylists,
+            String playlistName) {
         this.userFullName = userFullName;
         this.playlistId = playlistId;
+        this.playlistName = playlistName;
         videos = videoPlaylists.stream()
                 .map(VideoPlaylist::getVideo)
                 .collect(Collectors.toList());
@@ -43,5 +46,13 @@ public class GetPlaylistVideoResponseDto{
 
     public void setUserFullName(String userFullName) {
         this.userFullName = userFullName;
+    }
+
+    public void setPlaylistName(String name) {
+        this.playlistName = name;
+    }
+
+    public String getPlaylistName() {
+        return this.playlistName;
     }
 }
