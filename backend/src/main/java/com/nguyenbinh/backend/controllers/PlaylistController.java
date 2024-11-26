@@ -63,6 +63,7 @@ public class PlaylistController {
     @GetMapping("/{playlistId}/videos/{videoId}")
     public ResponseEntity<GetPlaylistVideoResponseDto> getPlaylistsByPlaylistAndVideoId(@PathVariable Long playlistId,
             @PathVariable Long videoId) {
+
         Playlist playlist = playlistService.getPlaylistById(playlistId);
         List<VideoPlaylist> playlists = videoPlaylistService.getPlaylistsByPlaylistAndVideoId(playlistId, videoId);
         GetPlaylistVideoResponseDto getPlaylistVideoResponseDto = new GetPlaylistVideoResponseDto(

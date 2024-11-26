@@ -16,7 +16,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchPlaylist = async () => {
+
   const response = await axios.get("http://localhost:8080/playlists/", {
+
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

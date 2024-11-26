@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
+t
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import AddVideoDialog from "./components/AddVideoDialog";
@@ -17,6 +18,13 @@ import { Button } from "../../components/ui/button";
 const PlaylistPage = () => {
   const params = useParams();
   const [playlist, setPlaylist] = useState();
+
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
+const PlaylistPage = () => {
+  const params = useParams();
+  const [playlist, setPlaylist] = useState("");
   useEffect(() => {
     async function fetchPlaylist() {
       try {
@@ -41,6 +49,7 @@ const PlaylistPage = () => {
   return (
     <div>
       <NavBar />
+
       {playlist == null ? (
         <div>loading</div>
       ) : (
