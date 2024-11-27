@@ -48,9 +48,9 @@ const HomePage = () => {
         <NavBar />
         <div className="p-10 flex gap-4 flex-col h-screen">
           <h1 className="text-4xl font-bold">Latest Videos</h1>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-4  gap-4  ">
             {videos.map((video) => (
-                <Card className="w-1/4" key={video.id}>
+                <Card className="w-full" key={video.id}>
                   <CardHeader>
                     <ReactPlayer
                         style={{ position: "relative" }}

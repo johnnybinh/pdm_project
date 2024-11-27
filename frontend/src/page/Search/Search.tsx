@@ -65,75 +65,75 @@ const SearchPage = () => {
   };
 
   return (
-    <div>
-      <NavBar />
-      <div className="p-12">
-        <div className="p-2  flex gap-4 flex-col bg-gre items-center">
-          <h1 className="font-bold text-3xl">Search</h1>
-          <Form {...form}>
-            <form
-              action=""
-              className="w-1/2 gap-2 flex"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
-              <FormField
-                control={form.control}
-                name="searchTerm"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input className="" placeholder="Video name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button>
-                <Search />
-              </Button>
-            </form>
-          </Form>
-        </div>
-        <center>
-          <div className="flex  items-center w-1/2">
-            {searchResult === undefined ? (
-              <div>Type Your Query</div>
-            ) : (
-              <>
-                {searchResult.map((res, index) => (
-                  <Card className="w-full" key={index}>
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <ReactPlayer
-                          width={"40%"}
-                          height={"12rem"}
-                          url={res.videoUrl}
-                        />
-                        <div className="flex flex-col items-start w-3/5">
-                          <h1 className="font-bold">{res.videoName}</h1>
-                          <h1 className="">
-                            Description:{res.videoDescription}
-                          </h1>
-                          <h1 className="">Upload by: {res.user.fullName}</h1>
-                          <h1 className="">
-                            Date: {formatDate(res.createdDate)}
-                          </h1>
-                        </div>
-                        <div className=" w-1/4">
-                          <Link to={`/videos/${res.videoId}`}>
-                            <Button className="justify-self-end ">Watch</Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </>
-            )}
+      <div>
+        <NavBar />
+        <div className="p-12">
+          <div className="p-2  flex gap-4 flex-col bg-gre items-center">
+            <h1 className="font-bold text-3xl">Search</h1>
+            <Form {...form}>
+              <form
+                  action=""
+                  className="w-1/2 gap-2 flex"
+                  onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                    control={form.control}
+                    name="searchTerm"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormControl>
+                            <Input className="" placeholder="Video name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button>
+                  <Search />
+                </Button>
+              </form>
+            </Form>
           </div>
-        </center>
+          <center>
+            <div className="flex  items-center w-1/2">
+              {searchResult === undefined ? (
+                  <div>Type Your Query</div>
+              ) : (
+                  <div className="flex gap-2 flex-col">
+                    {searchResult.map((res, index) => (
+                        <Card className="w-full" key={index}>
+                          <CardHeader>
+                            <div className="flex items-center gap-4">
+                              <ReactPlayer
+                                  width={"40%"}
+                                  height={"12rem"}
+                                  url={res.videoUrl}
+                              />
+                              <div className="flex flex-col items-start w-3/5">
+                                <h1 className="font-bold">{res.videoName}</h1>
+                                <h1 className="">
+                                  Description:{res.videoDescription}
+                                </h1>
+                                <h1 className="">Upload by: {res.user.fullName}</h1>
+                                <h1 className="">
+                                  Date: {formatDate(res.createdDate)}
+                                </h1>
+                              </div>
+                              <div className=" w-1/4">
+                                <Link to={`/videos/${res.videoId}`}>
+                                  <Button className="justify-self-end ">Watch</Button>
+                                </Link>
+                              </div>
+                            </div>
+                          </CardHeader>
+                        </Card>
+                    ))}
+                  </div>
+              )}
+            </div>
+          </center>
+        </div>
       </div>
-    </div>
   );
 };
 
