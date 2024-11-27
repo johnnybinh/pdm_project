@@ -10,8 +10,8 @@ export async function register(data: {
 }) {
   try {
     const response = await axios.post(
-      "http://localhost:8080/auth/signup",
-      data
+        "http://localhost:8080/auth/signup",
+        data
     );
     return response.data;
   } catch (error) {
@@ -35,6 +35,8 @@ export async function logout() {
   localStorage.clear();
 }
 
-export function checkLogin() {
-  return localStorage.getItem("token") === null;
-}
+export const checkLogin = () => {
+  const token = localStorage.getItem("token");
+  // Validate the token (e.g., check its expiration or decode it)
+  return !!token;
+};
