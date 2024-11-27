@@ -10,25 +10,27 @@ import SearchPage from "./page/Search/Search";
 import VideosPage from "./page/Videos/VideosPage";
 import PlaylistDashboard from "./page/Playlist/PlaylistDashboard";
 import PlaylistPage from "./page/Playlist/PlaylistPage";
+import PlaylistPlayer from "./page/Playlist/PlaylistPlayer"; // Import the PlaylistPlayer component
 
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Routes>
-        <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/auth">
-          <Route path="/auth/login" element={<Login />}></Route>
-          <Route path="/auth/register" element={<Register />}></Route>
-        </Route>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/upload" element={<Upload />}></Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
-        <Route path="/search" element={<SearchPage />}></Route>
-        <Route path="/videos/:id" element={<VideosPage />}></Route>
-        <Route path="/playlist" element={<PlaylistDashboard />}></Route>
-        <Route path="/playlist/:id" element={<PlaylistPage />}></Route>
-      </Routes>
-    </ThemeProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth">
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+          </Route>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/videos/:id" element={<VideosPage />} />
+          <Route path="/playlist" element={<PlaylistDashboard />} />
+          <Route path="/playlist/:id" element={<PlaylistPage />} />
+          <Route path="/playlist/:id/play-all" element={<PlaylistPlayer />} /> {/* New route for Play All */}
+        </Routes>
+      </ThemeProvider>
   );
 };
 
