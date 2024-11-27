@@ -89,94 +89,90 @@ const AddVideoDialog = (playlistId: any, userId) => {
   };
 
   return (
-    <>
-      {user == null ? (
-        <p>loadingq</p>
-      ) : (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-screen-xl">
-            <DialogHeader>
-              {" "}
-              <DialogTitle>
-                {" "}
-                Add video for playlist {JSON.stringify(playlistId.playlistId)}
-              </DialogTitle>
-            </DialogHeader>
-            <DialogHeader>
-              <Form {...form}>
-                <form
-                  className="flex flex-row items-center gap-2 justify-center w-full "
-                  action=""
-                  onSubmit={form.handleSubmit(onSubmit)}
-                >
-                  <FormField
-                    control={form.control}
-                    name="query"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <Input
-                            className=""
-                            placeholder="Video Name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit">
-                    <SearchIcon />
-                  </Button>
-                </form>
-              </Form>
-            </DialogHeader>
-            <DialogDescription>
-              {/* <div className="">{JSON.stringify(videos)}</div> */}
-              {videos == null ? (
-                <h1>type your query above</h1>
-              ) : (
-                <>
-                  {videos.map((video, index) => (
-                    <Card key={index}>
-                      <CardHeader className="flex flex-row items-center gap-4">
-                        <ReactPlayer
-                          width={"20rem"}
-                          height={"10rem"}
-                          url={video.videoUrl}
-                          controls={true}
-                        ></ReactPlayer>
-                        <CardTitle className="w-1/3 p-4">
-                          <h1 className="text-2xl">{video.videoName}</h1>
-                          <h1 className="text-2xl">
-                            uploaded by: {video.user.fullName}
-                          </h1>
-                        </CardTitle>
-                        <div className="w-1/2 flex justify-center">
-                          <Button
-                            onClick={() => {
-                              handleVideoAdd(video.videoId, user.userId);
-                            }}
-                            size={"lg"}
-                          >
-                            Add to playlist
-                          </Button>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  ))}
-                </>
-              )}
-            </DialogDescription>
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
+      <>
+        {user == null ? (
+            <p>Loading...</p>
+        ) : (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-screen-xl max-h-screen overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    Add Video for Playlist: {JSON.stringify(playlistId.playlistId)}
+                  </DialogTitle>
+                </DialogHeader>
+
+                <DialogHeader>
+                  <Form {...form}>
+                    <form
+                        className="flex flex-row items-center gap-2 justify-center w-full"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
+                      <FormField
+                          control={form.control}
+                          name="query"
+                          render={({ field }) => (
+                              <FormItem className="w-full">
+                                <FormControl>
+                                  <Input
+                                      className="border-2 p-2 rounded-md"
+                                      placeholder="Video Name"
+                                      {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                          )}
+                      />
+                      <Button type="submit">
+                        <SearchIcon />
+                      </Button>
+                    </form>
+                  </Form>
+                </DialogHeader>
+
+                <DialogDescription>
+                  {videos == null ? (
+                      <h1 className="text-center">Type your query above to search for videos</h1>
+                  ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {videos.map((video, index) => (
+                            <Card key={index} className="shadow-lg rounded-lg overflow-hidden">
+                              <CardHeader className="flex flex-col items-center gap-4">
+                                <ReactPlayer
+                                    width={"100%"}
+                                    height={"200px"}
+                                    url={video.videoUrl}
+                                    controls={true}
+                                    className="mb-4"
+                                />
+                                <CardTitle className="w-full text-center p-4">
+                                  <h2 className="text-xl font-semibold">{video.videoName}</h2>
+                                  <p className="text-md text-gray-600">Uploaded by: {video.user.fullName}</p>
+                                </CardTitle>
+                                <Button
+                                    onClick={() => {
+                                      handleVideoAdd(video.videoId, user.userId);
+                                    }}
+                                    size={"lg"}
+                                    className="bg-green-500 text-white hover:bg-green-600 px-6 py-2 rounded-md"
+                                >
+                                  Add to Playlist
+                                </Button>
+                              </CardHeader>
+                            </Card>
+                        ))}
+                      </div>
+                  )}
+                </DialogDescription>
+              </DialogContent>
+            </Dialog>
+        )}
+      </>
   );
 };
 

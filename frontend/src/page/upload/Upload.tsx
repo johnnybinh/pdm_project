@@ -20,15 +20,15 @@ import NavBar from "../components/NavBar";
 import { useToast } from "../../hooks/use-toast";
 
 const uploadSchema = z.object({
-  videoName: z.string(),
-  videoDescription: z.string(),
-  videoUrl: z.string(),
+  videoName: z.string().nonempty("Video name is required"),
+  videoDescription: z.string().nonempty("Video description is required"),
+  videoUrl: z.string().url("Valid URL is required"),
   userId: z.string(),
 });
 
 const Upload = () => {
-  const { user, loading } = useUser();
-  const { toast } = useToast(); // Initialize the toast function
+  const { user, loading, addVideo } = useUser(); // Retrieve addVideo from context
+  const { toast } = useToast();
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof uploadSchema>>({
@@ -57,10 +57,25 @@ const Upload = () => {
           }
       );
 
+      // Update user context with the new video
+      addVideo({
+        title: data.videoName,
+        url: data.videoUrl,
+        videoId: response.data.videoId,
+      });
+
       toast({
         title: "Video Uploaded",
         description: "Your video has been uploaded successfully!",
       });
+
+      form.reset({
+        videoName: "",
+        videoDescription: "",
+        videoUrl: "",
+      });
+
+      setVideoUrl(null);
 
       return response.data;
     } catch (error) {
@@ -76,7 +91,7 @@ const Upload = () => {
   return (
       <>
         {loading ? (
-            <h1>loading</h1>
+            <h1>Loading...</h1>
         ) : (
             <div>
               <NavBar />
@@ -84,7 +99,6 @@ const Upload = () => {
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                   Create New Video
                 </h1>
-                <h1>{loading}</h1>
                 <Form {...form}>
                   <form
                       className="w-1/2"
@@ -98,7 +112,10 @@ const Upload = () => {
                             <FormItem>
                               <FormLabel>Video Title</FormLabel>
                               <FormControl>
-                                <Input placeholder="My Awesome Video" {...field} />
+                                <Input
+                                    placeholder="My Awesome Video"
+                                    {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -126,11 +143,11 @@ const Upload = () => {
                         name="videoUrl"
                         render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Video Url</FormLabel>
+                              <FormLabel>Video URL</FormLabel>
                               <FormControl>
                                 <Input
                                     placeholder="utfs.io/"
-                                    disabled={true}
+                                    disabled
                                     {...field}
                                     value={videoUrl ?? ""}
                                 />

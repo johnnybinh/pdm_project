@@ -1,18 +1,21 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
-// Create a context for user
-const UserContext = createContext({ user: null, loading: true });
+const UserContext = createContext({
+  user: null,
+  loading: true,
+  updateUser: () => {},
+  addVideo: () => {},
+});
 
 export const useUser = () => {
-  return useContext(UserContext); // Custom hook to access user context
+  return useContext(UserContext);
 };
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // State to store the user object
-  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Function to fetch user data based on the token
   const fetchUser = async (token) => {
     try {
       const response = await axios.get("http://localhost:8080/users/me", {
@@ -20,34 +23,57 @@ export const UserProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUser(response.data); // Set the user data
+      setUser(response.data);
     } catch (error) {
       console.error("Failed to fetch user data", error);
-      setUser(null); // Clear user on error
+      setUser(null);
     } finally {
-      setLoading(false); // Stop loading after data is fetched
+      setLoading(false);
     }
   };
 
-  // Function to manually update the user data (e.g., after login or token change)
   const updateUser = () => {
-    const token = localStorage.getItem("token"); // Get the token from localStorage
+    const token = localStorage.getItem("token");
     if (token) {
-      setLoading(true); // Set loading state to true during fetch
-      fetchUser(token); // Fetch the user data
+      setLoading(true);
+      fetchUser(token);
     } else {
-      setUser(null); // Clear user if no token exists
-      setLoading(false); // Stop loading
+      setUser(null);
+      setLoading(false);
     }
   };
 
-  // Initial fetch of user data when the provider mounts
+  const addVideo = async (newVideo) => {
+    if (user) {
+      try {
+        const response = await axios.post(
+            "http://localhost:8080/videos",
+            newVideo,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+        );
+
+        const addedVideo = response.data;
+
+        setUser((prevUser) => ({
+          ...prevUser,
+          videos: [...prevUser.videos, addedVideo],
+        }));
+      } catch (error) {
+        console.error("Failed to add video", error);
+      }
+    }
+  };
+
   useEffect(() => {
-    updateUser(); // Call updateUser to fetch user data on initial mount
+    updateUser();
   }, []);
 
   return (
-      <UserContext.Provider value={{ user, loading, updateUser }}>
+      <UserContext.Provider value={{ user, loading, updateUser, addVideo }}>
         {children}
       </UserContext.Provider>
   );
