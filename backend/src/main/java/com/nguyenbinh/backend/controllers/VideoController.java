@@ -39,7 +39,7 @@ public class VideoController {
         return ResponseEntity.ok(videoDetailsDto);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/upload")
     public ResponseEntity<?> saveVideo(@RequestBody VideoRequestDto videoRequest) {
         Users user = userService.getUserById(videoRequest.getUserId());
 

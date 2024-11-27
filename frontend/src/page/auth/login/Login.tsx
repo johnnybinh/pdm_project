@@ -50,7 +50,7 @@ const Login = () => {
             const response = await login(data);
             console.log("Login Successful:", response); // Log response
 
-// Save token to localStorage (assuming the login function returns a token)
+            // Save token to localStorage (assuming the login function returns a token)
             if (response.token) {
                 localStorage.setItem("token", response.token);
                 updateUser(); // Manually update the user context
@@ -120,7 +120,7 @@ const Login = () => {
                     </Button>
                 </form>
             </Form>
-            <hr className="border-b-2 w-1/4 border-border" />
+            <hr className="border-b-2  w-1/4 border-border" />
             <div className="flex justify-center items-center">
                 <h1 className="text-xl">don't have an account?</h1>
                 <Link to={"/auth/register"}>

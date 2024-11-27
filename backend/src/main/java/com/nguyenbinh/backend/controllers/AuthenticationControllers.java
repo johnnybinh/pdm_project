@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RequestMapping("/auth")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "**")
 public class AuthenticationControllers {
 
   @Autowired
