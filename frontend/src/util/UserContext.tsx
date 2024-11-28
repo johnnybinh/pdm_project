@@ -39,7 +39,7 @@ export const UserProvider = ({ children }) => {
       fetchUser(token);
     } else {
       setUser(null);
-      setLoading(false);
+      setLoading(false); // Avoid flicker by deferring until token is checked
     }
   };
 
@@ -69,7 +69,13 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    updateUser();
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoading(true);
+      fetchUser(token);
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   return (

@@ -25,11 +25,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
   @Modifying
   @Transactional
-  @Query(value = "INSERT INTO users (full_name, email, password, profile_picture, created_at, updated_at) " +
-          "VALUES (:fullName, :email, :password, :profilePicture, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+  @Query(value = "INSERT INTO users (full_name, email, password, profile_picture, created_at) " +
+          "VALUES (:fullName, :email, :password, :profilePicture, CURRENT_TIMESTAMP)",
           nativeQuery = true)
   int createUser(@Param("fullName") String fullName,
                  @Param("email") String email,
                  @Param("password") String password,
                  @Param("profilePicture") String profilePicture);
+
 }

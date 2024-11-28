@@ -10,7 +10,7 @@ import SearchPage from "./page/Search/Search";
 import VideosPage from "./page/Videos/VideosPage";
 import PlaylistDashboard from "./page/Playlist/PlaylistDashboard";
 import PlaylistPage from "./page/Playlist/PlaylistPage";
-import PlaylistPlayer from "./page/Playlist/PlaylistPlayer"; // Import the PlaylistPlayer component
+import PlaylistPlayer from "./page/Playlist/PlaylistPlayer";
 
 const App = () => {
   return (

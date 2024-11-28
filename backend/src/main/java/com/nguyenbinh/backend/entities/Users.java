@@ -25,17 +25,19 @@ public class Users implements UserDetails {
   @Email(message = "Email should be valid")
   private String email;
 
-  @Column(unique = false)
+  @Column(unique = false, nullable = false)
   private String fullName;
 
   @Column()
   private String profilePicture;
 
   @Column(nullable = false)
+  @NotNull(message = "Password is required")
   private String password;
 
-  // Getter and Setter
-
+  @CreationTimestamp
+  @Column(updatable = false, name = "created_at")
+  private Date createdAt;
 
   public void setUserId(Long user_id) {
     this.userId = userId;
@@ -77,14 +79,6 @@ public class Users implements UserDetails {
     return this;
   }
 
-  @CreationTimestamp
-  @Column(updatable = false, name = "created_at")
-  private Date createdAt;
-
-  @UpdateTimestamp
-  @Column(name = "updated_at")
-  private Date updatedAt;
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of();
@@ -119,5 +113,4 @@ public class Users implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }
