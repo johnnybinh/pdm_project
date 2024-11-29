@@ -25,12 +25,22 @@ public class AuthenticationService {
   }
 
   public Users signup(UserRegisterDto input) {
-    Users user = new Users()
-        .setFullName(input.getFirstname() + " " + input.getLastname())
-        .setEmail(input.getEmail())
-        .setPassword(passwordEncoder.encode(input.getPassword()))
-        .setProfilePicture(input.getProfilePicture());
-    return userRepository.save(user);
+    String fullName = input.getFirstname() + " " + input.getLastname();
+    String encodedPassword = passwordEncoder.encode(input.getPassword());
+
+    int rowsInserted = userRepository.createUser(
+            fullName,
+            input.getEmail(),
+            encodedPassword,
+            input.getProfilePicture()
+    );
+
+    if (rowsInserted > 0) {
+      return userRepository.findByEmail(input.getEmail())
+              .orElseThrow(() -> new RuntimeException("User creation failed"));
+    } else {
+      throw new RuntimeException("Failed to create user");
+    }
   }
 
   public Users authenticate(LoginUserDto input) {

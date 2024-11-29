@@ -35,6 +35,9 @@ export async function logout() {
   localStorage.clear();
 }
 
-export function checkLogin() {
-  return localStorage.getItem("token") === null;
-}
+export const checkLogin = () => {
+  const token = localStorage.getItem("token");
+  // Validate the token (e.g., check its expiration or decode it)
+  return !!token;
+};
+

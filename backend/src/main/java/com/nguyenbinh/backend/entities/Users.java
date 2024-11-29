@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.Collection;
@@ -14,21 +16,36 @@ import java.util.List;
 @Entity
 public class Users implements UserDetails {
   @Id
-  @GeneratedValue
-  @Column(nullable = false)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id", nullable = false)
+  private Long userId;
 
   @Column(unique = true, length = 100, nullable = false)
+  @NotNull(message = "Email is required")
+  @Email(message = "Email should be valid")
   private String email;
 
-  @Column(unique = false)
+  @Column(unique = false, nullable = false)
   private String fullName;
 
   @Column()
   private String profilePicture;
 
   @Column(nullable = false)
+  @NotNull(message = "Password is required")
   private String password;
+
+  @CreationTimestamp
+  @Column(updatable = false, name = "created_at")
+  private Date createdAt;
+
+  public void setUserId(Long user_id) {
+    this.userId = userId;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
 
   public String getEmail() {
     return this.email;
@@ -61,14 +78,6 @@ public class Users implements UserDetails {
     this.password = password;
     return this;
   }
-
-  @CreationTimestamp
-  @Column(updatable = false, name = "created_at")
-  private Date createdAt;
-
-  @UpdateTimestamp
-  @Column(name = "updated_at")
-  private Date updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,5 +113,4 @@ public class Users implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }
